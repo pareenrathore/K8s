@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pareen-deployment
+  labels:
+    first: app
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: web
+
+  template:
+    metadata:
+      labels:
+        app: web
+
+    spec:
+      containers:
+        - name: pareen-container
+          image: pareenrathore/vegetable-app:latest 
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pareen-service
+
+spec:
+  selector:
+    app: web
+
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 3008
+
+  type: NodePort
